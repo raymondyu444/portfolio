@@ -1,0 +1,122 @@
+{
+  "name": "Portfolio 2026 Design System",
+  "version": "1.0.0",
+  "colors": {
+    "primary": {
+      "blueSky": "#dbf2ff",
+      "description": "Main background sky color"
+    },
+    "ticker": {
+      "purple": "#7d649f",
+      "white": "#ffffff",
+      "black": "#000000",
+      "description": "Ticker component colors"
+    },
+    "clouds": {
+      "white": "#ffffff",
+      "lightGray": "#f5f5f5",
+      "shadowGray": "rgba(0, 0, 0, 0.05)",
+      "description": "Cloud colors and shadows"
+    },
+    "neutral": {
+      "gray100": "#f8f9fa",
+      "gray200": "#e9ecef",
+      "gray300": "#dee2e6",
+      "gray400": "#ced4da",
+      "gray500": "#adb5bd",
+      "gray600": "#6c757d",
+      "gray700": "#495057",
+      "gray800": "#343a40",
+      "gray900": "#212529"
+    }
+  },
+  "spacing": {
+    "xs": "4px",
+    "sm": "8px",
+    "md": "16px",
+    "lg": "24px",
+    "xl": "32px",
+    "2xl": "48px",
+    "3xl": "64px"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+      "mono": "'Courier New', Courier, monospace"
+    },
+    "fontSizes": {
+      "xs": "12px",
+      "sm": "14px",
+      "base": "16px",
+      "lg": "18px",
+      "xl": "20px",
+      "2xl": "24px",
+      "3xl": "30px",
+      "4xl": "36px",
+      "5xl": "48px",
+      "6xl": "60px"
+    },
+    "fontWeights": {
+      "light": 300,
+      "normal": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "lineHeights": {
+      "tight": 1.2,
+      "normal": 1.5,
+      "relaxed": 1.75,
+      "loose": 2
+    }
+  },
+  "sizes": {
+    "canvas": {
+      "width": 643,
+      "height": 298,
+      "description": "Original Figma canvas dimensions"
+    },
+    "breakpoints": {
+      "mobile": "320px",
+      "tablet": "768px",
+      "desktop": "1024px",
+      "wide": "1440px"
+    }
+  },
+  "effects": {
+    "shadows": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+    },
+    "blurs": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "16px",
+      "xl": "24px"
+    },
+    "transitions": {
+      "fast": "150ms ease-in-out",
+      "base": "300ms ease-in-out",
+      "slow": "500ms ease-in-out"
+    }
+  },
+  "borderRadius": {
+    "none": "0",
+    "sm": "4px",
+    "md": "8px",
+    "lg": "12px",
+    "xl": "16px",
+    "2xl": "24px",
+    "full": "9999px"
+  },
+  "animation": {
+    "cloudFloat": {
+      "duration": "60s",
+      "timingFunction": "ease-in-out",
+      "iterationCount": "infinite",
+      "direction": "alternate"
+    }
+  }
+}

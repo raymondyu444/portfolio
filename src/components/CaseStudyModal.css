@@ -1,0 +1,662 @@
+/* Case Study modal – Figma 380-1571 first section */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
+
+.case-study-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: transparent;
+}
+
+.case-study-modal {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  max-height: calc(100vh - 48px);
+  height: calc(100vh - 48px);
+  overflow: auto;
+  background: #1C1D1F;
+}
+
+/* Close: fixed; 48px from top (24px + 24px), same offset from right as modal edge */
+.case-study-modal__close-wrap {
+  position: fixed;
+  top: 48px;
+  right: max(48px, calc((100vw + 1248px) / 2 - 1200px));
+  z-index: 10001;
+}
+
+.case-study-modal__close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.case-study-modal__close-icon {
+  width: 28.8px;
+  height: 28.8px;
+}
+
+.case-study-modal__close:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+/* ========== First section – Figma 380-1571 ========== */
+.case-study-modal__hero-section {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 24px 24px 0 24px;
+  padding-top: 72px;
+}
+
+.case-study-modal__hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.case-study-modal__title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.2;
+  color: #ffffff;
+  margin: 0;
+}
+
+.case-study-modal__subtitle {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.case-study-modal__hero-mockup {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.case-study-modal__hero-image {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  display: block;
+  border-radius: 32px;
+  border: 10px solid #C7C9CE;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+
+/* Desktop: hero section in a row (text left, mockup right); Challenge | My role side by side with vertical divider */
+@media (min-width: 768px) {
+  .case-study-modal__hero-section {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 80px 120px 0 120px;
+    padding-top: 72px;
+  }
+
+  .case-study-modal__hero-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .case-study-modal__title {
+    font-size: 40px;
+    line-height: 1.2;
+  }
+
+  .case-study-modal__hero-mockup {
+    flex-shrink: 0;
+  }
+
+  .case-study-modal__hero-image {
+    max-width: 320px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .case-study-modal__hero-section {
+    padding-left: 120px;
+    padding-right: 120px;
+  }
+
+  .case-study-modal__title {
+    font-size: 48px;
+    line-height: 64px;
+  }
+}
+
+/* ========== Second section – Figma 343-1489: Challenge | My role, Year/Timeline/Tools ========== */
+.case-study-modal__overview-section {
+  margin-top: 120px;
+  padding: 0 24px 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.case-study-modal__overview-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+}
+
+.case-study-modal__overview-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.case-study-modal__overview-heading {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  color: #ffffff;
+  text-decoration: underline;
+  margin: 0;
+}
+
+.case-study-modal__overview-text {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.case-study-modal__overview-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.case-study-modal__overview-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.case-study-modal__overview-meta-label {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 21px;
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.case-study-modal__overview-meta-value {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (min-width: 768px) {
+  .case-study-modal__overview-section {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+    padding-left: 120px;
+    padding-right: 120px;
+  }
+
+  .case-study-modal__overview-col {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .case-study-modal__overview-divider {
+    width: 1px;
+    height: auto;
+    align-self: stretch;
+    min-height: 80px;
+    margin: 0 24px;
+    flex-shrink: 0;
+  }
+
+  .case-study-modal__overview-meta {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .case-study-modal__overview-meta-item {
+    min-width: 0;
+  }
+}
+
+/* ========== Third section – Figma 343-1508: tl;dr white card ========== */
+.case-study-modal__tldr-section {
+  margin-top: 120px;
+  padding: 0 24px 0 24px;
+}
+
+.case-study-modal__tldr-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.case-study-modal__tldr-divider {
+  width: 100%;
+  height: 1px;
+  background: #e0e0e0;
+  flex-shrink: 0;
+}
+
+.case-study-modal__tldr-col {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.case-study-modal__tldr-col--left .case-study-modal__tldr-question {
+  margin-top: -24px;
+}
+
+.case-study-modal__tldr-main-heading {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.3;
+  color: #212325;
+  margin: 0;
+}
+
+.case-study-modal__tldr-question {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #212325;
+  margin: 0;
+}
+
+.case-study-modal__tldr-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.case-study-modal__tldr-heading {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  color: #212325;
+  text-decoration: underline;
+  margin: 0;
+}
+
+.case-study-modal__tldr-text {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #212325;
+  margin: 0;
+}
+
+.case-study-modal__tldr-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.case-study-modal__tldr-metric-value {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.2;
+  color: #212325;
+}
+
+.case-study-modal__tldr-metric-label {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #212325;
+}
+
+@media (min-width: 768px) {
+  .case-study-modal__tldr-section {
+    padding-left: 120px;
+    padding-right: 120px;
+  }
+
+  .case-study-modal__tldr-card {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 40px;
+  padding: 40px 40px;
+  }
+
+  .case-study-modal__tldr-col {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .case-study-modal__tldr-col--right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .case-study-modal__tldr-col--left {
+    padding-right: 0;
+  }
+
+  .case-study-modal__tldr-col--right {
+    padding-left: 0;
+  }
+
+  .case-study-modal__tldr-divider {
+    width: 1px;
+    height: auto;
+    align-self: stretch;
+    min-height: 120px;
+    margin: 0;
+    flex-shrink: 0;
+    background: #c7c9ce;
+  }
+
+  .case-study-modal__tldr-metric-value {
+    font-size: 28px;
+  }
+
+  .case-study-modal__tldr-main-heading {
+    font-size: 32px;
+  }
+}
+
+/* ========== Step sections – Understand (01) … Finalize (04), Results (05), same pattern – Figma 343-1533, 343-1604, 343-1639, 343-1662, 343-1688 ========== */
+.case-study-modal__understand-section,
+.case-study-modal__conceptualize-section,
+.case-study-modal__validate-section,
+.case-study-modal__finalize-section,
+.case-study-modal__results-section {
+  margin-top: 120px;
+  padding: 0 24px 80px 24px;
+}
+
+/* 120px spacing between section 1 (Understand) and section 2 (Conceptualize) */
+.case-study-modal__understand-section {
+  padding-bottom: 120px;
+}
+
+.case-study-modal__conceptualize-section {
+  margin-top: 0;
+  padding-bottom: 120px;
+}
+
+.case-study-modal__validate-section {
+  margin-top: 0;
+  padding-bottom: 120px;
+}
+
+.case-study-modal__finalize-section {
+  margin-top: 0;
+  padding-bottom: 120px;
+}
+
+.case-study-modal__results-section {
+  margin-top: 0;
+}
+
+.case-study-modal__understand-header {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+.case-study-modal__understand-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.case-study-modal__understand-num > span {
+  transform: rotate(-45deg);
+}
+
+.case-study-modal__understand-title {
+  font-family: 'Playfair Display';
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 1.2;
+  color: #ffffff;
+  margin: 0;
+}
+
+.case-study-modal__understand-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-left: 72px; /* align with "Understand" (diamond 40px + gap 32px) */
+}
+
+.case-study-modal__understand-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.case-study-modal__understand-heading {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.25;
+  color: #ffffff;
+  margin: 0;
+}
+
+.case-study-modal__understand-sub {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 20px 0 0 0;
+  text-decoration: underline;
+}
+
+.case-study-modal__understand-sub:first-child {
+  margin-top: 16px;
+}
+
+/* First h4 under Emerging Themes: no margin block start */
+.case-study-modal__understand-content > .case-study-modal__understand-block:last-child > .case-study-modal__understand-sub:first-child {
+  margin-top: 0 !important;
+  margin-block-start: 0 !important;
+}
+
+.case-study-modal__understand-sub--underline {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.case-study-modal__understand-text {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.case-study-modal__understand-text--bold {
+  font-weight: 600;
+}
+
+.case-study-modal__understand-list {
+  /* List item left edge at 24px so bullet centers with diamond center (20px) */
+  margin: 0 0 0 -48px;
+  padding: 0;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  list-style: none;
+}
+
+.case-study-modal__understand-list li {
+  margin-bottom: 8px;
+  padding-left: 48px; /* align list text with body (72px from section start) */
+  position: relative;
+}
+
+/* 8×8 round bullet circles: stroke only, 1px (8px total including stroke) */
+.case-study-modal__understand-list:not(.case-study-modal__understand-list--numbered) li::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 0.5em;
+  width: 8px;
+  height: 8px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: none;
+}
+
+.case-study-modal__understand-list--numbered {
+  list-style: none;
+  counter-reset: step-num;
+}
+
+.case-study-modal__understand-list--numbered li {
+  counter-increment: step-num;
+}
+
+.case-study-modal__understand-list--numbered li::before {
+  content: counter(step-num) '. ';
+  position: absolute;
+  left: 0;
+}
+
+.case-study-modal__understand-list-item--struck {
+  text-decoration: line-through;
+}
+
+.case-study-modal__understand-list-item--struck::before {
+  text-decoration: line-through;
+}
+
+/* User quote inside list (Validate section) */
+.case-study-modal__understand-quote {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 8px 0 0 0;
+  padding-left: 0;
+  border: none;
+}
+
+.case-study-modal__understand-quote strong {
+  font-weight: 700;
+}
+
+/* List items with multiple blocks: tighten first sub margin */
+.case-study-modal__understand-list li > .case-study-modal__understand-sub:first-child {
+  margin-top: 0;
+}
+
+.case-study-modal__understand-list li > .case-study-modal__understand-text {
+  margin-top: 4px;
+}
+
+/* Experiment mockups (Conceptualize E1, E2, E3) */
+.case-study-modal__experiment-mockup {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.case-study-modal__experiment-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* Final GIF – 120px only between sections: gap from Finalize = its padding-bottom; gap to Results = margin-bottom */
+.case-study-modal__final-gif-wrap {
+  margin-top: 0;
+  margin-bottom: 120px;
+  padding: 0 24px;
+}
+
+.case-study-modal__final-gif {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+@media (min-width: 768px) {
+  .case-study-modal__understand-section,
+  .case-study-modal__conceptualize-section,
+  .case-study-modal__validate-section,
+  .case-study-modal__finalize-section,
+  .case-study-modal__results-section {
+    padding-left: 120px;
+    padding-right: 120px;
+  }
+
+  .case-study-modal__understand-title {
+    font-size: 48px;
+  }
+
+  .case-study-modal__final-gif-wrap {
+    padding-left: 120px;
+    padding-right: 120px;
+  }
+}
+

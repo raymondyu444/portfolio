@@ -1,0 +1,369 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Ceviche+One&family=Changa+One&family=Work+Sans:wght@600&display=swap');
+
+.lore-card-container {
+  width: 208px;
+  height: 290px;
+  perspective: 1500px;
+  position: fixed;
+  z-index: 998;
+  cursor: move;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  touch-action: none;
+}
+
+/* Mobile: no dragging, default cursor */
+.lore-card-container--mobile {
+  cursor: default;
+  touch-action: auto;
+}
+
+.lore-card-container--dragging {
+  cursor: grabbing;
+  opacity: 0.9;
+}
+
+.lore-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.lore-card--flipped {
+  transform: rotateY(180deg);
+}
+
+.lore-card__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  box-shadow: 6px 6px 0px 0px #000000;
+}
+
+/* Front of card */
+.lore-card__face--front {
+  background-color: #71acf2;
+  padding: 8px;
+  box-shadow: 6px 6px 0px 0px #000000, inset 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  transform: rotateY(0deg);
+}
+
+.lore-card__inner {
+  width: 100%;
+  height: 100%;
+  background-color: #d6edfe;
+  border: 2px solid #0d55c0;
+  border-radius: 4px;
+  padding: 8px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+
+/* Header */
+.lore-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 4px;
+}
+
+.lore-card__name {
+  font-family: 'Ceviche One', cursive;
+  font-size: 24px;
+  line-height: 25px;
+  color: #0d55c0;
+  margin: 0;
+  font-weight: normal;
+}
+
+.lore-card__level {
+  display: flex;
+  align-items: flex-end;
+  font-family: 'Changa One', cursive;
+  color: #000000;
+}
+
+.lore-card__level-label {
+  font-size: 8px;
+  line-height: 8px;
+  padding-bottom: 2px;
+}
+
+.lore-card__level-number {
+  font-size: 18px;
+  line-height: 19px;
+}
+
+/* Character image */
+.lore-card__image-container {
+  width: 100%;
+  height: 112px;
+  margin-bottom: 8px;
+  position: relative;
+  border: 4px solid #edf1f3;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0.5px 0.5px 1px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 6px 0px rgba(0, 0, 0, 0.4);
+}
+
+.lore-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Sections */
+.lore-card__section {
+  margin-bottom: 8px;
+}
+
+.lore-card__section--weaknesses {
+  margin-bottom: 0;
+  margin-top: 12px;
+}
+
+.lore-card__section-title {
+  font-family: 'Changa One', cursive;
+  font-size: 10px;
+  line-height: 10px;
+  color: #0d55c0;
+  margin: 0 0 4px 0;
+  font-weight: normal;
+}
+
+/* Abilities */
+.lore-card__ability {
+  background-color: #ffffff;
+  border: 2px solid #0d55c0;
+  border-radius: 8px;
+  padding: 8px 5px;
+  box-shadow: 2px 2px 0px 0px #000000;
+  position: relative;
+}
+
+.lore-card__ability-sparkles {
+  position: absolute;
+  right: 5px;
+  top: 2px;
+  width: 26px;
+  height: 24px;
+  z-index: 0;
+}
+
+.lore-card__sparkle {
+  position: absolute;
+  font-size: 10px;
+  line-height: 11px;
+  opacity: 0.9;
+}
+
+.lore-card__sparkle--1 {
+  left: 9px;
+  top: 0;
+}
+
+.lore-card__sparkle--2 {
+  left: 0;
+  top: 13px;
+}
+
+.lore-card__sparkle--3 {
+  left: 16px;
+  top: 13px;
+}
+
+.lore-card__ability-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Changa One', cursive;
+  color: #000000;
+  position: relative;
+  z-index: 1;
+}
+
+.lore-card__ability-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lore-card__emoji {
+  font-size: 10px;
+  line-height: normal;
+}
+
+.lore-card__ability-name {
+  font-size: 14px;
+  line-height: 15px;
+}
+
+.lore-card__ability-value {
+  font-size: 14px;
+  line-height: 15px;
+}
+
+/* Weaknesses */
+.lore-card__weaknesses-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: 'Changa One', cursive;
+  color: #000000;
+}
+
+.lore-card__weaknesses-row {
+  display: flex;
+  gap: 12px;
+}
+
+.lore-card__weakness {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.lore-card__weaknesses-row:first-child .lore-card__weakness:first-child {
+  width: 62px;
+}
+
+.lore-card__weaknesses-row:first-child .lore-card__weakness:last-child {
+  width: 68px;
+  margin-left: 8px;
+}
+
+.lore-card__weaknesses-row:last-child .lore-card__weakness:first-child {
+  width: 62px;
+}
+
+.lore-card__weaknesses-row:last-child .lore-card__weakness:last-child {
+  width: 68px;
+  margin-left: 8px;
+}
+
+.lore-card__weakness-emoji {
+  font-size: 8px;
+  line-height: 8px;
+  flex-shrink: 0;
+}
+
+.lore-card__weakness-name {
+  font-size: 12px;
+  line-height: 13px;
+}
+
+.lore-card__cta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+/* Only the ABOUT ME link is clickable; button resets default styles */
+.lore-card__cta-button {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.lore-card__cta-text {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  color: #ffffff;
+}
+
+.lore-card__arrows {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lore-card__arrow {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 22px;
+  color: #ffffff;
+  display: block;
+  width: 21px;
+  height: 27px;
+  line-height: 27px;
+  text-align: center;
+  opacity: 0;
+  animation: arrowFade 1.5s ease-in-out infinite;
+}
+
+.lore-card__arrow--1 {
+  opacity: 1;
+  animation-delay: 0s;
+}
+
+.lore-card__arrow--2 {
+  animation-delay: 0.2s;
+}
+
+.lore-card__arrow--3 {
+  animation-delay: 0.4s;
+}
+
+@keyframes arrowFade {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.lore-card--flipped .lore-card__face--front {
+  visibility: hidden;
+}
+
+.lore-card__face--back {
+  background-color: #0d55c0;
+  padding: 24px;
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: flex-start;
+  box-shadow: 6px 6px 0px 0px #000000, inset 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  position: relative;
+}
+
+.lore-card--flipped .lore-card__face--back {
+  z-index: 2;
+}
+
+/* Hover effect on container (desktop :hover and mobile/tablet tap) */
+.lore-card-container:hover .lore-card__face,
+.lore-card-container--hovered .lore-card__face {
+  box-shadow: 7px 7px 0px 0px #000000;
+}
+
+/* Disable flip transition and force front face when dragging (mouse only; touch keeps hover state) */
+.lore-card-container--dragging:not(.lore-card-container--touch-dragging) .lore-card {
+  transition: none;
+  transform: rotateY(0deg) !important;
+}
+
+.lore-card-container--dragging:not(.lore-card-container--touch-dragging) .lore-card__face {
+  box-shadow: 6px 6px 0px 0px #000000;
+}

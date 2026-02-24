@@ -1,0 +1,98 @@
+.carousel {
+  position: fixed;
+  box-shadow: 6px 6px 0px 0px #000000;
+  cursor: move;
+  cursor: grab;
+  z-index: 999;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  touch-action: none;
+  overflow: hidden;
+}
+
+.carousel--dragging {
+  cursor: grabbing;
+  opacity: 0.9;
+}
+
+.carousel--desktop {
+  width: 220px;
+  height: 220px;
+}
+
+.carousel--mobile {
+  width: 220px;
+  height: 220px;
+}
+
+.carousel__image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.carousel__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.carousel__image--active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.carousel__indicators {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+
+.carousel__indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #000000;
+  background-color: #ffffff;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.carousel__indicator:hover {
+  background-color: #e0e0e0;
+}
+
+.carousel__indicator--active {
+  background-color: #7d649f;
+}
+
+/* Hover effect */
+.carousel:hover {
+  box-shadow: 7px 7px 0px 0px #000000;
+  transform: translate(-1px, -1px);
+  transition: all 0.1s ease;
+}
+
+.carousel:active {
+  box-shadow: 4px 4px 0px 0px #000000;
+  transform: translate(2px, 2px);
+}
+
+.carousel--dragging:hover,
+.carousel--dragging:active {
+  box-shadow: 6px 6px 0px 0px #000000;
+  transform: none;
+}

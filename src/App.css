@@ -1,0 +1,68 @@
+.App {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Desktop: cards are position fixed and float; wrapper doesn't affect them */
+.app-cards {
+  position: relative;
+}
+
+/* Mobile layout – Figma 293-688: vertical stack, 24px from left/right, 24px gap; card sizes fixed like desktop */
+@media (max-width: 767px) {
+  .app-cards {
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px;
+    gap: 24px;
+    align-items: center;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .app-cards .lore-card-container,
+  .app-cards .case-study-card-container {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    /* keep fixed width/height from desktop (208x290 lore, 480x286 case study) */
+  }
+
+  .app-cards .ticker {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    cursor: default;
+    touch-action: auto;
+  }
+
+  .app-cards .carousel {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    cursor: default;
+    touch-action: auto;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  padding: 2rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

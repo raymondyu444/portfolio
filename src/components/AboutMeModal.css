@@ -1,0 +1,336 @@
+/* About Me Modal – Figma node 291-2248 */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+.about-me-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 767px) {
+  .about-me-modal-overlay {
+    padding: 12px;
+    align-items: stretch;
+  }
+}
+
+/* Modal: Figma Size/960 = 960px, Spacing/24 = 24px, Spacing/40 = 40px */
+.about-me-modal {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 24px 24px 5rem 24px; /* bottom 80px / 5rem */
+}
+
+/* Close: white circle, 2px border, X with 2px stroke and rounded ends */
+.about-me-modal__close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 2px solid #000000;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #000000;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.about-me-modal__close-icon {
+  width: 28.8px;  /* 20% larger than 24px; stroke stays 2px */
+  height: 28.8px;
+}
+
+.about-me-modal__close:hover {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+/* Close in its own div, top-right corner (all breakpoints) */
+.about-me-modal__close-wrap {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 2;
+}
+
+/* Extra top padding so title/content sit further from close */
+.about-me-modal__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 48px;
+}
+
+/* Main: title full-width, then row = paragraphs + image; 24px = 1.5rem between title and content */
+.about-me-modal__main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about-me-modal__main-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Title – Figma Font Size/32, Line Height/43 (base); Font Size/48, Line Height/64 (desktop) */
+.about-me-modal__heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 43px;
+  color: #000000;
+  margin: 0;
+}
+
+/* Paragraphs – Figma Font Size/16, Line Height/24 */
+.about-me-modal__bio {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #212325;
+}
+
+.about-me-modal__bio p {
+  margin: 0 0 1.5rem 0; /* 24px between paragraphs */
+}
+
+.about-me-modal__bio p:last-child {
+  margin-bottom: 0;
+}
+
+/* Profile: square, rounded corners, fixed max size for proportion */
+.about-me-modal__profile-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-me-modal__profile {
+  flex-shrink: 0;
+}
+
+.about-me-modal__profile--mobile {
+  width: 160px; /* Figma mobile ~150–180px diameter */
+}
+
+.about-me-modal__profile--desktop .about-me-modal__profile-image {
+  max-width: 220px;
+}
+
+.about-me-modal__profile--mobile .about-me-modal__profile-image {
+  border-radius: 50%;
+  border: 2px solid #000000; /* Figma mobile: thin black border */
+}
+
+.about-me-modal__profile--desktop {
+  display: none;
+}
+
+/* Stats table: no outer border; only inside borders between cells */
+.about-me-modal__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  background: #ffffff;
+}
+
+.about-me-modal__stat {
+  padding: 16px;
+  border-right: 1px solid #7d649f;
+  border-bottom: 1px solid #7d649f;
+  background: #ffffff;
+}
+
+.about-me-modal__stat:nth-child(3n) {
+  border-right: none;
+}
+
+.about-me-modal__stat:nth-last-child(-n + 3) {
+  border-bottom: none;
+}
+
+.about-me-modal__stat-label {
+  display: block;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.3;
+  color: #212325;
+  margin-bottom: 4px;
+  text-decoration: underline;
+}
+
+.about-me-modal__stat-value {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #212325;
+}
+
+/* ========== Tablet (768px+) ========== */
+@media (min-width: 768px) {
+  .about-me-modal {
+    max-width: 960px;
+    padding: 24px 120px 5rem 120px;
+  }
+
+  .about-me-modal__main-row {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .about-me-modal__main-row .about-me-modal__bio {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .about-me-modal__profile--desktop {
+    display: block;
+    width: 200px;
+    flex-shrink: 0;
+  }
+
+  .about-me-modal__profile--mobile {
+    display: none;
+  }
+
+  .about-me-modal__content {
+    gap: 48px;
+  }
+
+  .about-me-modal__stat:nth-child(3n-2) {
+    padding-left: 0;
+  }
+
+  .about-me-modal__stat:nth-child(3n) {
+    padding-right: 0;
+  }
+}
+
+/* ========== Desktop (1024px+) ========== */
+@media (min-width: 1024px) {
+  .about-me-modal {
+    max-width: 960px;
+    padding: 40px 120px 5rem 120px;
+  }
+
+  .about-me-modal__main {
+    gap: 40px;
+  }
+
+  .about-me-modal__profile--desktop {
+    width: 220px;
+  }
+
+  .about-me-modal__heading {
+    font-size: 48px;
+    line-height: 64px;
+  }
+
+  .about-me-modal__bio {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  /* Keep "High fidelity prototyping" on one line: third column can grow to fit */
+  .about-me-modal__stats {
+    grid-template-columns: 1fr 1fr minmax(min-content, 1fr);
+  }
+  .about-me-modal__stat:nth-child(3) .about-me-modal__stat-value {
+    white-space: nowrap;
+  }
+}
+
+/* ========== Mobile only – Figma node 309-790 ========== */
+@media (max-width: 767px) {
+  /* Keep close in same place; only content scrolls so close stays visible */
+  .about-me-modal {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: calc(100vh - 24px); /* more visible, less cut off */
+    padding: 24px 0 0 24px;          /* no right padding so scrollbar at right edge; no 80px bottom on mobile */
+  }
+
+  .about-me-modal__content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px 24px 1rem 0; /* top 24px; right 24px (scrollbar at edge); bottom space */
+    gap: 1rem;                  /* 16px between sections (p and list items) */
+  }
+
+  .about-me-modal__mobile-header {
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .about-me-modal__profile--mobile {
+    margin: 0;
+  }
+
+  /* Typography: Figma Font Size/32, Line Height/43 (title); Font Size/16, Line Height/21 (body); Line Height/14 (labels) */
+  .about-me-modal__heading {
+    font-size: 32px;
+    line-height: 43px;
+  }
+
+  .about-me-modal__bio {
+    font-size: 14px;
+    line-height: 21px;
+  }
+
+  /* Stats: vertical list, no borders; 24px (1.5rem) between Location/Experience etc. */
+  .about-me-modal__stats {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .about-me-modal__stat {
+    border-right: none;
+    border-bottom: none;
+    padding: 0;
+  }
+
+  .about-me-modal__stat-label {
+    margin-bottom: 0.25rem;
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  .about-me-modal__stat-value {
+    display: block;
+    font-size: 16px;
+    line-height: 21px;
+  }
+}
+
+/* Hide mobile header on desktop/tablet */
+@media (min-width: 768px) {
+  .about-me-modal__mobile-header {
+    display: none;
+  }
+}
+
