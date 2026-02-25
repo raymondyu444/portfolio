@@ -4,6 +4,12 @@ import cloudImage from '../assets/cloud.png';
 import lightYearsImage from '../assets/light-years.png';
 import './CloudBackground.css';
 
+// Load galaxy images via Vite so URLs resolve in dev and build
+const galaxyModules = import.meta.glob('../assets/galaxy-*.png', { query: '?url', import: 'default', eager: true });
+const galaxyUrls = Object.keys(galaxyModules)
+  .sort((a, b) => parseInt(a.match(/galaxy-(\d+)/)[1], 10) - parseInt(b.match(/galaxy-(\d+)/)[1], 10))
+  .map((key) => galaxyModules[key]);
+
 const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
   const canvasRef = useRef(null);
   const clouds = useRef([]);
@@ -42,15 +48,16 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
       console.log('❌ Failed to load light-years background');
     };
 
-    // Load galaxy images dynamically
+    // Load galaxy images (URLs from Vite so they work in dev and build)
     let loadedCount = 0;
-    const totalGalaxies = 68;
-    
-    for (let i = 1; i <= totalGalaxies; i++) {
+    const totalGalaxies = galaxyUrls.length;
+    if (totalGalaxies === 0) setGalaxiesLoaded(true);
+
+    galaxyUrls.forEach((url, index) => {
       const img = new Image();
-      img.src = `/src/assets/galaxy-${i}.png`;
+      img.src = url;
       img.onload = () => {
-        galaxyImgRefs.current[i - 1] = img;
+        galaxyImgRefs.current[index] = img;
         loadedCount++;
         if (loadedCount === totalGalaxies) {
           console.log(`✅ All ${totalGalaxies} galaxy images loaded successfully`);
@@ -58,13 +65,11 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
         }
       };
       img.onerror = () => {
-        console.log(`❌ Failed to load galaxy image ${i}`);
+        console.log(`❌ Failed to load galaxy image ${index + 1}`);
         loadedCount++;
-        if (loadedCount === totalGalaxies) {
-          setGalaxiesLoaded(true);
-        }
+        if (loadedCount === totalGalaxies) setGalaxiesLoaded(true);
       };
-    }
+    });
   }, []);
 
   useEffect(() => {
@@ -114,7 +119,7 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
             row: row,
             col: col,
             scale: 1,
-            speed: (0.01 + Math.random() * 0.02) * 0.3125 * direction, // Gentle cloud drift
+            speed: (0.01 + Math.random() * 0.02) * 0.390625 * direction, // Gentle cloud drift (25% faster)
             opacity: 1,
             isReverse: isReverse
           });
