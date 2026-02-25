@@ -48,13 +48,10 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
     const lightYearsImg = new Image();
     lightYearsImg.src = lightYearsImage;
     lightYearsImg.onload = () => {
-      console.log('✅ Light-years background loaded');
       lightYearsImgRef.current = lightYearsImg;
       setLightYearsLoaded(true);
     };
-    lightYearsImg.onerror = () => {
-      console.log('❌ Failed to load light-years background');
-    };
+    lightYearsImg.onerror = () => setLightYearsLoaded(true);
 
     // Load galaxy images (URLs from Vite so they work in dev and build)
     let loadedCount = 0;
@@ -67,13 +64,9 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
       img.onload = () => {
         galaxyImgRefs.current[index] = img;
         loadedCount++;
-        if (loadedCount === totalGalaxies) {
-          console.log(`✅ All ${totalGalaxies} galaxy images loaded successfully`);
-          setGalaxiesLoaded(true);
-        }
+        if (loadedCount === totalGalaxies) setGalaxiesLoaded(true);
       };
       img.onerror = () => {
-        console.log(`❌ Failed to load galaxy image ${index + 1}`);
         loadedCount++;
         if (loadedCount === totalGalaxies) setGalaxiesLoaded(true);
       };
@@ -86,7 +79,7 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true, willReadFrequently: false });
     
     // Cloud data structure - evenly spaced grid layout
     const generateClouds = () => {
@@ -364,4 +357,4 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
   );
 };
 
-export default CloudBackground;
+export default React.memo(CloudBackground);

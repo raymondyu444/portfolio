@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import CloudBackground from './components/CloudBackground';
 import Ticker from './components/Ticker';
 import Carousel from './components/Carousel';
 import LoreCard from './components/LoreCard';
 import CaseStudyCard from './components/CaseStudyCard';
-import AboutMeModal from './components/AboutMeModal';
-import CaseStudyModal from './components/CaseStudyModal';
 import './App.css';
+
+const AboutMeModal = lazy(() => import('./components/AboutMeModal'));
+const CaseStudyModal = lazy(() => import('./components/CaseStudyModal'));
 
 const MOBILE_BREAKPOINT = 767;
 
@@ -32,29 +33,12 @@ function App() {
     return () => mq.removeEventListener('change', update);
   }, []);
 
-  const handleGalaxyChange = (show) => {
-    setShowGalaxy(show);
-  };
-
-  const handleGradientChange = (show) => {
-    setShowGradient(show);
-  };
-
-  const handleAboutMeClick = () => {
-    setShowAboutModal(true);
-  };
-
-  const handleCloseAboutModal = () => {
-    setShowAboutModal(false);
-  };
-
-  const handleCaseStudyClick = () => {
-    setShowCaseStudyModal(true);
-  };
-
-  const handleCloseCaseStudyModal = () => {
-    setShowCaseStudyModal(false);
-  };
+  const handleGalaxyChange = useCallback((show) => setShowGalaxy(show), []);
+  const handleGradientChange = useCallback((show) => setShowGradient(show), []);
+  const handleAboutMeClick = useCallback(() => setShowAboutModal(true), []);
+  const handleCloseAboutModal = useCallback(() => setShowAboutModal(false), []);
+  const handleCaseStudyClick = useCallback(() => setShowCaseStudyModal(true), []);
+  const handleCloseCaseStudyModal = useCallback(() => setShowCaseStudyModal(false), []);
 
   // Galaxy shows when hovering lore card OR when About Me modal is open
   const galaxyVisible = showGalaxy || showAboutModal;
@@ -78,8 +62,10 @@ function App() {
         <LoreCard onHoverChange={handleGalaxyChange} onAboutMeClick={handleAboutMeClick} />
         <Carousel gifs={carouselGifs} size="desktop" />
       </div>
-      <AboutMeModal isOpen={showAboutModal} onClose={handleCloseAboutModal} />
-      <CaseStudyModal isOpen={showCaseStudyModal} onClose={handleCloseCaseStudyModal} />
+      <Suspense fallback={null}>
+        <AboutMeModal isOpen={showAboutModal} onClose={handleCloseAboutModal} />
+        <CaseStudyModal isOpen={showCaseStudyModal} onClose={handleCloseCaseStudyModal} />
+      </Suspense>
       <div className="content">
         {/* Future portfolio content will go here */}
       </div>
