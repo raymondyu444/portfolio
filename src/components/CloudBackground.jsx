@@ -15,7 +15,7 @@ const TRANSITION_MS = 500;
 const GALAXY_TRANSITION_MS = 1000;
 const GALAXY_BG_FRAC = 0.25;     // progress 0–0.25: light-years fades in
 const GALAXY_DELAY_FRAC = 0.14; // sprites start at 140ms
-const GALAXY_DRIFT_MULTIPLIER = 0.25; // 50% slower (half of previous)
+const GALAXY_DRIFT_MULTIPLIER = 0.3; // 20% faster than 0.25
 
 // Smoothstep for eased transition
 const smoothstep = (t) => t * t * (3 - 2 * t);
