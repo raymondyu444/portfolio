@@ -11,10 +11,11 @@ const galaxyUrls = Object.keys(galaxyModules)
   .map((key) => galaxyModules[key]);
 
 const TRANSITION_MS = 500;
-// 75% of 1000ms = faster; light-years fades in, then 0.5s delay, then galaxy PNGs
+// Galaxy transition: faster overall; light-years first, then 0.5s delay, then PNGs
 const GALAXY_TRANSITION_MS = 750;
-const GALAXY_BG_FRAC = 1 / 6;   // first 1/6 of transition: light-years fades in
-const GALAXY_DELAY_FRAC = 5 / 6; // sprites start at 5/6 (0.5s delay after bg full)
+const GALAXY_BG_FRAC = 1 / 6;    // progress 0–1/6: light-years fades in (~125ms)
+const GALAXY_DELAY_FRAC = 5 / 6; // progress 5/6–1: galaxy PNGs fade in (0.5s after bg full)
+const GALAXY_DRIFT_MULTIPLIER = 0.5; // 50% slower (applied every frame so no refresh needed)
 
 // Smoothstep for eased transition
 const smoothstep = (t) => t * t * (3 - 2 * t);
@@ -259,7 +260,7 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
     const drawGalaxySprites = () => {
       if (!galaxiesLoaded) return;
       galaxyData.current.forEach(galaxy => {
-        galaxy.x += galaxy.speed;
+        galaxy.x += galaxy.speed * GALAXY_DRIFT_MULTIPLIER;
         if (galaxy.x > canvas.width + 200) galaxy.x = -200;
         if (galaxy.x < -200) galaxy.x = canvas.width + 200;
         drawGalaxy(galaxy);
