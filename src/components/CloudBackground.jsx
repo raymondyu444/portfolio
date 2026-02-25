@@ -237,7 +237,8 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
 
-    const drawGalaxyBg = () => {
+    // Light-years image only (no galaxy sprites)
+    const drawGalaxyBgImage = () => {
       if (!lightYearsImgRef.current || !lightYearsLoaded) return;
       const scale = Math.max(
         canvas.width / lightYearsImgRef.current.width,
@@ -248,14 +249,22 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
       const x = (canvas.width - scaledWidth) / 2;
       const y = (canvas.height - scaledHeight) / 2;
       ctx.drawImage(lightYearsImgRef.current, x, y, scaledWidth, scaledHeight);
-      if (galaxiesLoaded) {
-        galaxyData.current.forEach(galaxy => {
-          galaxy.x += galaxy.speed;
-          if (galaxy.x > canvas.width + 200) galaxy.x = -200;
-          if (galaxy.x < -200) galaxy.x = canvas.width + 200;
-          drawGalaxy(galaxy);
-        });
-      }
+    };
+
+    // Galaxy sprites only (positions updated here, once per frame)
+    const drawGalaxySprites = () => {
+      if (!galaxiesLoaded) return;
+      galaxyData.current.forEach(galaxy => {
+        galaxy.x += galaxy.speed;
+        if (galaxy.x > canvas.width + 200) galaxy.x = -200;
+        if (galaxy.x < -200) galaxy.x = canvas.width + 200;
+        drawGalaxy(galaxy);
+      });
+    };
+
+    const drawGalaxyBg = () => {
+      drawGalaxyBgImage();
+      drawGalaxySprites();
     };
 
     const drawBackground = (state) => {
@@ -285,8 +294,18 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
         const eased = smoothstep(t.progress);
         drawBackground(t.from);
         ctx.save();
-        ctx.globalAlpha = eased;
-        drawBackground(t.to);
+        if (t.to === 'galaxy') {
+          // Light-years background fades in faster (full by ~50%); galaxy PNGs fade in slower (start 25%, full at end)
+          const bgAlpha = smoothstep(Math.min(1, eased / 0.5));
+          const spritesAlpha = smoothstep(Math.max(0, (eased - 0.25) / 0.75));
+          ctx.globalAlpha = eased * bgAlpha;
+          drawGalaxyBgImage();
+          ctx.globalAlpha = eased * spritesAlpha;
+          drawGalaxySprites();
+        } else {
+          ctx.globalAlpha = eased;
+          drawBackground(t.to);
+        }
         ctx.restore();
       } else {
         drawBackground(t.to);
