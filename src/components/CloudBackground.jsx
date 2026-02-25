@@ -10,6 +10,11 @@ const galaxyUrls = Object.keys(galaxyModules)
   .sort((a, b) => parseInt(a.match(/galaxy-(\d+)/)[1], 10) - parseInt(b.match(/galaxy-(\d+)/)[1], 10))
   .map((key) => galaxyModules[key]);
 
+const TRANSITION_MS = 500;
+
+// Smoothstep for eased transition
+const smoothstep = (t) => t * t * (3 - 2 * t);
+
 const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
   const canvasRef = useRef(null);
   const clouds = useRef([]);
@@ -20,12 +25,8 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [lightYearsLoaded, setLightYearsLoaded] = useState(false);
   const [galaxiesLoaded, setGalaxiesLoaded] = useState(false);
-
-  // Log when showGalaxy or showGradient changes
-  useEffect(() => {
-    console.log('CloudBackground showGalaxy changed to:', showGalaxy);
-    console.log('CloudBackground showGradient changed to:', showGradient);
-  }, [showGalaxy, showGradient]);
+  const transitionRef = useRef({ progress: 1, from: 'sky', to: 'sky' });
+  const lastFrameTimeRef = useRef(null);
 
   useEffect(() => {
     // Load cloud image
@@ -216,71 +217,90 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
       ctx.restore();
     };
 
+    const getTargetState = () => {
+      if (showGalaxy) return 'galaxy';
+      if (showGradient) return 'gradient';
+      return 'sky';
+    };
+
+    const drawSkyBg = () => {
+      ctx.fillStyle = showCaseStudyModal ? '#26282A' : designSystem.colors.primary.blueSky;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    };
+
+    const drawGradientBg = () => {
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, '#2b7ead');
+      gradient.addColorStop(0.56, '#e1daa3');
+      gradient.addColorStop(1, '#e56d6f');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    };
+
+    const drawGalaxyBg = () => {
+      if (!lightYearsImgRef.current || !lightYearsLoaded) return;
+      const scale = Math.max(
+        canvas.width / lightYearsImgRef.current.width,
+        canvas.height / lightYearsImgRef.current.height
+      );
+      const scaledWidth = lightYearsImgRef.current.width * scale;
+      const scaledHeight = lightYearsImgRef.current.height * scale;
+      const x = (canvas.width - scaledWidth) / 2;
+      const y = (canvas.height - scaledHeight) / 2;
+      ctx.drawImage(lightYearsImgRef.current, x, y, scaledWidth, scaledHeight);
+      if (galaxiesLoaded) {
+        galaxyData.current.forEach(galaxy => {
+          galaxy.x += galaxy.speed;
+          if (galaxy.x > canvas.width + 200) galaxy.x = -200;
+          if (galaxy.x < -200) galaxy.x = canvas.width + 200;
+          drawGalaxy(galaxy);
+        });
+      }
+    };
+
+    const drawBackground = (state) => {
+      if (state === 'galaxy') drawGalaxyBg();
+      else if (state === 'gradient') drawGradientBg();
+      else drawSkyBg();
+    };
+
+    // Start transition when target state changes
+    const target = getTargetState();
+    if (target !== transitionRef.current.to) {
+      transitionRef.current.from = transitionRef.current.to;
+      transitionRef.current.to = target;
+      transitionRef.current.progress = 0;
+    }
+
     // Animation loop
-    const animate = () => {
-      // Clear canvas with appropriate background
-      if (showGalaxy && lightYearsLoaded) {
-        // Draw light-years background image (cover the canvas)
-        const scale = Math.max(
-          canvas.width / lightYearsImgRef.current.width,
-          canvas.height / lightYearsImgRef.current.height
-        );
-        const scaledWidth = lightYearsImgRef.current.width * scale;
-        const scaledHeight = lightYearsImgRef.current.height * scale;
-        const x = (canvas.width - scaledWidth) / 2;
-        const y = (canvas.height - scaledHeight) / 2;
-        
-        ctx.drawImage(lightYearsImgRef.current, x, y, scaledWidth, scaledHeight);
-        
-        // Draw all galaxies with very subtle movement on top
-        if (galaxiesLoaded) {
-          galaxyData.current.forEach(galaxy => {
-            // Very slow drift
-            galaxy.x += galaxy.speed;
-            
-            // Wrap around screen
-            if (galaxy.x > canvas.width + 200) galaxy.x = -200;
-            if (galaxy.x < -200) galaxy.x = canvas.width + 200;
-            
-            drawGalaxy(galaxy);
-          });
-        }
-      } else if (showGradient) {
-        // Draw sunset gradient (blue -> yellow -> coral) - color stops must be 0-1
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        gradient.addColorStop(0, '#2b7ead'); // Blue at top
-        gradient.addColorStop(0.56, '#e1daa3'); // Yellow in middle
-        gradient.addColorStop(1, '#e56d6f'); // Coral at bottom
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const animate = (now) => {
+      const t = transitionRef.current;
+      if (lastFrameTimeRef.current != null && t.progress < 1) {
+        const delta = now - lastFrameTimeRef.current;
+        t.progress = Math.min(1, t.progress + delta / TRANSITION_MS);
+      }
+      lastFrameTimeRef.current = now;
+
+      if (t.progress < 1) {
+        const eased = smoothstep(t.progress);
+        drawBackground(t.from);
+        ctx.save();
+        ctx.globalAlpha = eased;
+        drawBackground(t.to);
+        ctx.restore();
       } else {
-        // Default: when Case Study modal is open use #26282A, otherwise sky blue
-        ctx.fillStyle = showCaseStudyModal ? '#26282A' : designSystem.colors.primary.blueSky;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        drawBackground(t.to);
       }
 
-      // Only update and draw clouds when not showing galaxy
       if (!showGalaxy) {
         clouds.current.forEach((cloud) => {
-          // Move cloud
           cloud.x += cloud.speed;
-
-          // Wrap around screen based on direction
           const cloudWidth = 643 * cloud.scale;
-          
           if (cloud.isReverse) {
-            // Moving left
-            if (cloud.x < -cloudWidth) {
-              cloud.x = canvas.width;
-            }
+            if (cloud.x < -cloudWidth) cloud.x = canvas.width;
           } else {
-            // Moving right
-            if (cloud.x > canvas.width) {
-              cloud.x = -cloudWidth;
-            }
+            if (cloud.x > canvas.width) cloud.x = -cloudWidth;
           }
-
-          // Draw cloud
           drawCloud(cloud.x, cloud.y, cloud.scale, 1);
         });
       }
@@ -288,7 +308,7 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
       requestAnimationFrame(animate);
     };
 
-    animate();
+    requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
