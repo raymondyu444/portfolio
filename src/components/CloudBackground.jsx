@@ -11,7 +11,10 @@ const galaxyUrls = Object.keys(galaxyModules)
   .map((key) => galaxyModules[key]);
 
 const TRANSITION_MS = 500;
-const GALAXY_TRANSITION_MS = 1000; // Light-years fades in first 0.5s, then galaxy sprites fade in (0.5s delay)
+// 75% of 1000ms = faster; light-years fades in, then 0.5s delay, then galaxy PNGs
+const GALAXY_TRANSITION_MS = 750;
+const GALAXY_BG_FRAC = 1 / 6;   // first 1/6 of transition: light-years fades in
+const GALAXY_DELAY_FRAC = 5 / 6; // sprites start at 5/6 (0.5s delay after bg full)
 
 // Smoothstep for eased transition
 const smoothstep = (t) => t * t * (3 - 2 * t);
@@ -159,7 +162,7 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
           // Increased by 10%: scale between 13.75% and 35.75%
           scale: 0.1375 + Math.random() * 0.22,
           opacity: 0.4 + Math.random() * 0.6, // Varied brightness
-          speed: (Math.random() - 0.5) * 0.02241162 // 30% slower than previous
+          speed: (Math.random() - 0.5) * 0.01120581 // 50% slower
         });
       });
     };
@@ -297,9 +300,9 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
         drawBackground(t.from);
         ctx.save();
         if (t.to === 'galaxy') {
-          // First 0.5s (eased 0–0.5): light-years fades in; next 0.5s (eased 0.5–1): galaxy sprites fade in
-          const bgAlpha = eased < 0.5 ? smoothstep(eased / 0.5) : 1;
-          const spritesAlpha = eased < 0.5 ? 0 : smoothstep((eased - 0.5) / 0.5);
+          // Light-years fades in first (1/6 of transition), then 0.5s delay, then galaxy PNGs fade in
+          const bgAlpha = eased < GALAXY_BG_FRAC ? smoothstep(eased / GALAXY_BG_FRAC) : 1;
+          const spritesAlpha = eased < GALAXY_DELAY_FRAC ? 0 : smoothstep((eased - GALAXY_DELAY_FRAC) / (1 - GALAXY_DELAY_FRAC));
           ctx.globalAlpha = eased * bgAlpha;
           drawGalaxyBgImage();
           ctx.globalAlpha = eased * spritesAlpha;
