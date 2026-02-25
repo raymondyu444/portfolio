@@ -11,14 +11,16 @@ const galaxyUrls = Object.keys(galaxyModules)
   .map((key) => galaxyModules[key]);
 
 const TRANSITION_MS = 500;
-// Galaxy transition: faster overall; light-years first, then 0.5s delay, then PNGs
-const GALAXY_TRANSITION_MS = 750;
-const GALAXY_BG_FRAC = 1 / 6;    // progress 0–1/6: light-years fades in (~125ms)
-const GALAXY_DELAY_FRAC = 5 / 6; // progress 5/6–1: galaxy PNGs fade in (0.5s after bg full)
-const GALAXY_DRIFT_MULTIPLIER = 0.5; // 50% slower (applied every frame so no refresh needed)
+// Galaxy transition: light-years first; galaxy PNGs stay at 0 until light-years is fully in
+const GALAXY_TRANSITION_MS = 1000;
+const GALAXY_BG_FRAC = 0.25;     // progress 0–0.25: light-years fades in
+const GALAXY_DELAY_FRAC = 0.14; // sprites start at 140ms
+const GALAXY_DRIFT_MULTIPLIER = 0.25; // 50% slower (half of previous)
 
 // Smoothstep for eased transition
 const smoothstep = (t) => t * t * (3 - 2 * t);
+// Smootherstep (zero derivative at 0 and 1) for gentler galaxy fade-in
+const smootherstep = (t) => t * t * t * (t * (t * 6 - 15) + 10);
 
 const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
   const canvasRef = useRef(null);
@@ -256,20 +258,24 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
       ctx.drawImage(lightYearsImgRef.current, x, y, scaledWidth, scaledHeight);
     };
 
-    // Galaxy sprites only (positions updated here, once per frame)
-    const drawGalaxySprites = () => {
+    const updateGalaxyPositions = () => {
       if (!galaxiesLoaded) return;
       galaxyData.current.forEach(galaxy => {
         galaxy.x += galaxy.speed * GALAXY_DRIFT_MULTIPLIER;
         if (galaxy.x > canvas.width + 200) galaxy.x = -200;
         if (galaxy.x < -200) galaxy.x = canvas.width + 200;
-        drawGalaxy(galaxy);
       });
+    };
+
+    const drawGalaxySpritesOnly = () => {
+      if (!galaxiesLoaded) return;
+      galaxyData.current.forEach(galaxy => drawGalaxy(galaxy));
     };
 
     const drawGalaxyBg = () => {
       drawGalaxyBgImage();
-      drawGalaxySprites();
+      updateGalaxyPositions();
+      drawGalaxySpritesOnly();
     };
 
     const drawBackground = (state) => {
@@ -285,13 +291,20 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
       transitionRef.current.to = target;
       transitionRef.current.progress = 0;
       transitionRef.current.durationMs = target === 'galaxy' ? GALAXY_TRANSITION_MS : TRANSITION_MS;
+      lastFrameTimeRef.current = null; // so first frame doesn't use stale delta and jump progress
+    }
+    // If effect re-runs while entering galaxy (e.g. images just loaded), restart from 0 so nothing shows until transition
+    if (target === 'galaxy' && transitionRef.current.progress > 0 && transitionRef.current.progress < GALAXY_BG_FRAC) {
+      transitionRef.current.progress = 0;
+      lastFrameTimeRef.current = null;
     }
 
     // Animation loop
     const animate = (now) => {
       const t = transitionRef.current;
       if (lastFrameTimeRef.current != null && t.progress < 1) {
-        const delta = now - lastFrameTimeRef.current;
+        let delta = now - lastFrameTimeRef.current;
+        delta = Math.min(delta, 80); // cap so we never skip the transition (e.g. tab in background)
         t.progress = Math.min(1, t.progress + delta / t.durationMs);
       }
       lastFrameTimeRef.current = now;
@@ -301,13 +314,17 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
         drawBackground(t.from);
         ctx.save();
         if (t.to === 'galaxy') {
-          // Light-years fades in first (1/6 of transition), then 0.5s delay, then galaxy PNGs fade in
-          const bgAlpha = eased < GALAXY_BG_FRAC ? smoothstep(eased / GALAXY_BG_FRAC) : 1;
-          const spritesAlpha = eased < GALAXY_DELAY_FRAC ? 0 : smoothstep((eased - GALAXY_DELAY_FRAC) / (1 - GALAXY_DELAY_FRAC));
-          ctx.globalAlpha = eased * bgAlpha;
+          const p = t.progress;
+          const bgAlpha = p < GALAXY_BG_FRAC ? smootherstep(p / GALAXY_BG_FRAC) : 1;
+          const spriteT = p <= GALAXY_DELAY_FRAC ? 0 : (p - GALAXY_DELAY_FRAC) / (1 - GALAXY_DELAY_FRAC);
+          const spritesAlpha = spriteT <= 0 ? 0 : 0.5 - 0.5 * Math.cos(Math.PI * spriteT);
+          ctx.globalAlpha = bgAlpha;
           drawGalaxyBgImage();
-          ctx.globalAlpha = eased * spritesAlpha;
-          drawGalaxySprites();
+          updateGalaxyPositions();
+          if (p > GALAXY_DELAY_FRAC) {
+            ctx.globalAlpha = spritesAlpha;
+            drawGalaxySpritesOnly();
+          }
         } else {
           ctx.globalAlpha = eased;
           drawBackground(t.to);
