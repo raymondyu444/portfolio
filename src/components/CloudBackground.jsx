@@ -119,7 +119,7 @@ const CloudBackground = ({ showGalaxy, showGradient, showCaseStudyModal }) => {
             row: row,
             col: col,
             scale: 1,
-            speed: (0.01 + Math.random() * 0.02) * 0.390625 * direction, // Gentle cloud drift (25% faster)
+            speed: (0.01 + Math.random() * 0.02) * 0.33203125 * direction, // Gentle cloud drift (15% slower)
             opacity: 1,
             isReverse: isReverse
           });
