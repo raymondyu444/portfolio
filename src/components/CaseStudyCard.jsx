@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import heroScotiabank from '../assets/hero-scotiabank.png';
+import ArrowIcon from './ArrowIcon';
 import './CaseStudyCard.css';
 
 const CARD_MARGIN = 24;
@@ -182,9 +183,9 @@ const CaseStudyCard = ({ type = 'desktop', onHoverChange, onCaseStudyClick }) =>
               >
                 <span className="case-study-card__cta-text">READ CASE STUDY</span>
                 <div className="case-study-card__arrows">
-                  <span className="case-study-card__arrow case-study-card__arrow--1">→</span>
-                  <span className="case-study-card__arrow case-study-card__arrow--2">→</span>
-                  <span className="case-study-card__arrow case-study-card__arrow--3">→</span>
+                  <ArrowIcon className="case-study-card__arrow case-study-card__arrow--1" />
+                  <ArrowIcon className="case-study-card__arrow case-study-card__arrow--2" />
+                  <ArrowIcon className="case-study-card__arrow case-study-card__arrow--3" />
                 </div>
               </button>
             </div>
@@ -232,9 +233,9 @@ const CaseStudyCard = ({ type = 'desktop', onHoverChange, onCaseStudyClick }) =>
               >
                 <span className="case-study-card__cta-text">READ CASE STUDY</span>
                 <div className="case-study-card__arrows">
-                  <span className="case-study-card__arrow case-study-card__arrow--1">→</span>
-                  <span className="case-study-card__arrow case-study-card__arrow--2">→</span>
-                  <span className="case-study-card__arrow case-study-card__arrow--3">→</span>
+                  <ArrowIcon className="case-study-card__arrow case-study-card__arrow--1" />
+                  <ArrowIcon className="case-study-card__arrow case-study-card__arrow--2" />
+                  <ArrowIcon className="case-study-card__arrow case-study-card__arrow--3" />
                 </div>
               </button>
             )}

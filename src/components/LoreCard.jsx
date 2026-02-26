@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import squirtleGif from '../assets/squirtle.gif';
+import ArrowIcon from './ArrowIcon';
 import './LoreCard.css';
 
 const CARD_MARGIN = 24;
@@ -35,6 +36,7 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
   const [isTouchDrag, setIsTouchDrag] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const cardRef = useRef(null);
+  const aboutMeButtonRef = useRef(null);
 
   // Character GIF from local assets
   const characterGif = squirtleGif;
@@ -79,14 +81,35 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
 
   const handleTouchStart = (e) => {
     const touch = e.touches[0];
-    setIsHovered(true); /* show hover state on tap (mobile/tablet) */
-    if (isMobile) return; /* no dragging on mobile */
+    if (isMobile) {
+      setIsHovered(true); /* show hover until they tap elsewhere */
+      return;
+    }
     startDrag(touch.clientX, touch.clientY, true);
   };
 
   const handleTouchEnd = () => {
-    if (isMobile) setIsHovered(false);
+    if (isMobile) return; /* keep hover; clear only on next tap outside / not on link */
   };
+
+  // On mobile: when hovered, dismiss hover if user taps anywhere other than the About Me link
+  useEffect(() => {
+    if (!isMobile || !isHovered) return;
+
+    const handleDismiss = (e) => {
+      const target = e.target;
+      const aboutMeBtn = aboutMeButtonRef.current;
+      const tappedOnAboutMe = aboutMeBtn && (aboutMeBtn === target || aboutMeBtn.contains(target));
+      if (!tappedOnAboutMe) setIsHovered(false);
+    };
+
+    document.addEventListener('touchstart', handleDismiss, true);
+    document.addEventListener('mousedown', handleDismiss, true);
+    return () => {
+      document.removeEventListener('touchstart', handleDismiss, true);
+      document.removeEventListener('mousedown', handleDismiss, true);
+    };
+  }, [isMobile, isHovered]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -242,6 +265,7 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
         {/* Back of card - only the CTA is clickable */}
         <div className="lore-card__face lore-card__face--back">
           <button
+            ref={aboutMeButtonRef}
             type="button"
             className="lore-card__cta lore-card__cta-button"
             onMouseDown={(e) => e.stopPropagation()}
@@ -253,9 +277,9 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
           >
             <span className="lore-card__cta-text">ABOUT ME</span>
             <div className="lore-card__arrows">
-              <span className="lore-card__arrow lore-card__arrow--1">→</span>
-              <span className="lore-card__arrow lore-card__arrow--2">→</span>
-              <span className="lore-card__arrow lore-card__arrow--3">→</span>
+              <ArrowIcon className="lore-card__arrow lore-card__arrow--1" />
+              <ArrowIcon className="lore-card__arrow lore-card__arrow--2" />
+              <ArrowIcon className="lore-card__arrow lore-card__arrow--3" />
             </div>
           </button>
         </div>

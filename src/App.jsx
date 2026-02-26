@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import PasswordGate from './components/PasswordGate';
 import CloudBackground from './components/CloudBackground';
 import Ticker from './components/Ticker';
 import Carousel from './components/Carousel';
@@ -53,23 +54,27 @@ function App() {
   ];
 
   return (
-    <div className="App">
+    <>
       <CloudBackground showGalaxy={galaxyVisible} showGradient={showGradient} showCaseStudyModal={showCaseStudyModal} />
-      {/* Mobile (Figma 293-688): vertical stack, 24px padding, order Ticker → CaseStudy → Lore → Carousel */}
-      <div className="app-cards">
-        <Ticker size={isMobileView ? 'mobile' : 'desktop'} />
-        <CaseStudyCard type={isMobileView ? 'tablet' : 'desktop'} onHoverChange={handleGradientChange} onCaseStudyClick={handleCaseStudyClick} />
-        <LoreCard onHoverChange={handleGalaxyChange} onAboutMeClick={handleAboutMeClick} />
-        <Carousel gifs={carouselGifs} size="desktop" />
-      </div>
-      <Suspense fallback={null}>
-        <AboutMeModal isOpen={showAboutModal} onClose={handleCloseAboutModal} />
-        <CaseStudyModal isOpen={showCaseStudyModal} onClose={handleCloseCaseStudyModal} />
-      </Suspense>
-      <div className="content">
-        {/* Future portfolio content will go here */}
-      </div>
-    </div>
+      <PasswordGate>
+        <div className="App">
+          {/* Mobile (Figma 293-688): vertical stack, 24px padding, order Ticker → CaseStudy → Lore → Carousel */}
+          <div className="app-cards">
+            <Ticker size={isMobileView ? 'mobile' : 'desktop'} />
+            <CaseStudyCard type={isMobileView ? 'tablet' : 'desktop'} onHoverChange={handleGradientChange} onCaseStudyClick={handleCaseStudyClick} />
+            <LoreCard onHoverChange={handleGalaxyChange} onAboutMeClick={handleAboutMeClick} />
+            <Carousel gifs={carouselGifs} size="desktop" />
+          </div>
+          <Suspense fallback={null}>
+            <AboutMeModal isOpen={showAboutModal} onClose={handleCloseAboutModal} />
+            <CaseStudyModal isOpen={showCaseStudyModal} onClose={handleCloseCaseStudyModal} />
+          </Suspense>
+          <div className="content">
+            {/* Future portfolio content will go here */}
+          </div>
+        </div>
+      </PasswordGate>
+    </>
   );
 }
 

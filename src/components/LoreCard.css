@@ -299,16 +299,18 @@
 }
 
 .lore-card__arrow {
-  font-family: 'Work Sans', sans-serif;
-  font-size: 22px;
   color: #ffffff;
   display: block;
   width: 21px;
   height: 27px;
-  line-height: 27px;
-  text-align: center;
+  flex-shrink: 0;
   opacity: 0;
   animation: arrowFade 1.5s ease-in-out infinite;
+}
+.lore-card__arrow svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .lore-card__arrow--1 {
