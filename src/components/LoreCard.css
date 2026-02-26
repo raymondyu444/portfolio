@@ -301,8 +301,8 @@
 .lore-card__arrow {
   color: #ffffff;
   display: block;
-  width: 21px;
-  height: 27px;
+  width: 16px;
+  height: 19px;
   flex-shrink: 0;
   opacity: 0;
   animation: arrowFade 1.5s ease-in-out infinite;

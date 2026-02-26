@@ -18,12 +18,11 @@
   touch-action: auto;
 }
 
-/* Mobile Case Study Card – Figma 293-778: white bg, thick black right edge, vertical layout, single shadow */
+/* Mobile Case Study Card – same shadow as Ticker/Lore: 6px 6px 0 0, no border-right to avoid double line */
 .case-study-card-container--mobile .case-study-card,
 .case-study-card-container--mobile:hover .case-study-card {
   background-color: #ffffff;
   border: none;
-  border-right: 10px solid #000000;
   box-shadow: 6px 6px 0px 0px #000000;
   padding: 24px;
 }
@@ -173,8 +172,8 @@
 .case-study-card__arrow {
   color: #000000;
   display: block;
-  width: 21px;
-  height: 27px;
+  width: 16px;
+  height: 19px;
   flex-shrink: 0;
   opacity: 0;
   animation: arrowFade 1.5s ease-in-out infinite;
@@ -233,8 +232,8 @@
   background-color: #ffffff;
 }
 
-/* Hover effect on container */
-.case-study-card-container:hover .case-study-card {
+/* Hover effect on container (desktop only – mobile keeps single 6px shadow) */
+.case-study-card-container:not(.case-study-card-container--mobile):hover .case-study-card {
   box-shadow: 7px 7px 0px 0px #000000;
 }
 

@@ -37,6 +37,10 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
   const [isMobile, setIsMobile] = useState(false);
   const cardRef = useRef(null);
   const aboutMeButtonRef = useRef(null);
+  const lastFlipTimeRef = useRef(0);
+  const aboutMeHandledByTouchRef = useRef(false);
+
+  const IGNORE_DISMISS_MS = 400;
 
   // Character GIF from local assets
   const characterGif = squirtleGif;
@@ -80,11 +84,13 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
   };
 
   const handleTouchStart = (e) => {
-    const touch = e.touches[0];
     if (isMobile) {
-      setIsHovered(true); /* show hover until they tap elsewhere */
+      e.preventDefault();
+      lastFlipTimeRef.current = Date.now();
+      setIsHovered(true);
       return;
     }
+    const touch = e.touches[0];
     startDrag(touch.clientX, touch.clientY, true);
   };
 
@@ -92,15 +98,21 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
     if (isMobile) return; /* keep hover; clear only on next tap outside / not on link */
   };
 
-  // On mobile: when hovered, dismiss hover if user taps anywhere other than the About Me link
+  // On mobile: when hovered (card flipped), dismiss only on touchstart outside the card.
+  // We do NOT listen for mousedown on mobile so the synthetic mousedown that follows a tap never closes the card.
   useEffect(() => {
     if (!isMobile || !isHovered) return;
 
     const handleDismiss = (e) => {
+      if (e.type === 'mousedown' && isMobile) return;
+
+      const now = Date.now();
+      if (now - lastFlipTimeRef.current < IGNORE_DISMISS_MS) return;
+
       const target = e.target;
-      const aboutMeBtn = aboutMeButtonRef.current;
-      const tappedOnAboutMe = aboutMeBtn && (aboutMeBtn === target || aboutMeBtn.contains(target));
-      if (!tappedOnAboutMe) setIsHovered(false);
+      const card = cardRef.current;
+      const tappedOnCard = card && card.contains(target);
+      if (!tappedOnCard) setIsHovered(false);
     };
 
     document.addEventListener('touchstart', handleDismiss, true);
@@ -158,6 +170,7 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
   };
 
   const handleMouseLeave = () => {
+    if (isMobile) return; /* on mobile, hover is cleared only by tap-outside (document touchstart), not by synthetic mouseleave when finger lifts */
     if (!isDragging) {
       setIsHovered(false);
     }
@@ -270,8 +283,19 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
             className="lore-card__cta lore-card__cta-button"
             onMouseDown={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => {
+              e.stopPropagation();
+              if (e.changedTouches?.length && onAboutMeClick) {
+                aboutMeHandledByTouchRef.current = true;
+                onAboutMeClick();
+              }
+            }}
             onClick={(e) => {
               e.stopPropagation();
+              if (aboutMeHandledByTouchRef.current) {
+                aboutMeHandledByTouchRef.current = false;
+                return;
+              }
               if (onAboutMeClick) onAboutMeClick();
             }}
           >
