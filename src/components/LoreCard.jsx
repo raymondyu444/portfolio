@@ -80,6 +80,12 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
 
   // Drag handlers
   const handleMouseDown = (e) => {
+    if (isMobile) {
+      /* On mobile (e.g. DevTools device mode with mouse): treat click as tap – flip card, don't drag */
+      lastFlipTimeRef.current = Date.now();
+      setIsHovered(true);
+      return;
+    }
     startDrag(e.clientX, e.clientY);
   };
 
@@ -98,21 +104,21 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
     if (isMobile) return; /* keep hover; clear only on next tap outside / not on link */
   };
 
-  // On mobile: when hovered (card flipped), dismiss only on touchstart outside the card.
-  // We do NOT listen for mousedown on mobile so the synthetic mousedown that follows a tap never closes the card.
+  // On mobile: when hovered (card flipped), dismiss on any tap/click anywhere – except tap on About Me opens modal.
+  // Time window prevents the synthetic mousedown (after a real touch) from closing the card.
   useEffect(() => {
     if (!isMobile || !isHovered) return;
 
     const handleDismiss = (e) => {
-      if (e.type === 'mousedown' && isMobile) return;
-
       const now = Date.now();
       if (now - lastFlipTimeRef.current < IGNORE_DISMISS_MS) return;
 
       const target = e.target;
-      const card = cardRef.current;
-      const tappedOnCard = card && card.contains(target);
-      if (!tappedOnCard) setIsHovered(false);
+      const aboutMeBtn = aboutMeButtonRef.current;
+      const tappedAboutMe = aboutMeBtn && (aboutMeBtn === target || aboutMeBtn.contains(target));
+      if (tappedAboutMe) return; /* About Me tap opens modal via button handler */
+
+      setIsHovered(false); /* tap/click anywhere else → flip back */
     };
 
     document.addEventListener('touchstart', handleDismiss, true);
