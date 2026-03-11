@@ -88,6 +88,11 @@ const AboutMeModal = ({ isOpen, onClose }) => {
               </div>
             ))}
           </div>
+
+          <div className="about-me-modal__claim" data-name="claim">
+            <span className="about-me-modal__claim-emoji" aria-hidden="true">🤖</span>
+            <p className="about-me-modal__claim-text">As a 90s child and watching the internet evolve, I vibe coded my site to have a geocities feel. I hope it's fun :)</p>
+          </div>
         </div>
       </div>
     </div>

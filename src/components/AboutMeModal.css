@@ -187,6 +187,35 @@
   color: #212325;
 }
 
+/* Claim – Figma light-purple box, 2px purple border, emoji + text */
+.about-me-modal__claim {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  background-color: #fcfaff;
+  border: 2px solid #7d649f;
+  border-radius: 8px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  color: #212325;
+}
+
+.about-me-modal__claim-emoji {
+  flex-shrink: 0;
+  font-size: 32px;
+  line-height: 38px;
+}
+
+.about-me-modal__claim-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  flex: 1;
+  min-width: 0;
+}
+
 /* ========== Tablet (768px+) ========== */
 @media (min-width: 768px) {
   .about-me-modal {
@@ -219,6 +248,20 @@
     gap: 48px;
   }
 
+  .about-me-modal__claim {
+    gap: 8px;
+    padding: 8px 16px;
+  }
+
+  .about-me-modal__claim-emoji {
+    font-size: 24px;
+  }
+
+  .about-me-modal__claim-text {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
   .about-me-modal__stat:nth-child(3n-2) {
     padding-left: 0;
   }
@@ -241,6 +284,15 @@
 
   .about-me-modal__profile--desktop {
     width: 220px;
+  }
+
+  .about-me-modal__claim-emoji {
+    font-size: 32px;
+  }
+
+  .about-me-modal__claim-text {
+    font-size: 16px;
+    line-height: 24px;
   }
 
   .about-me-modal__heading {
@@ -324,6 +376,21 @@
     display: block;
     font-size: 16px;
     line-height: 21px;
+  }
+
+  .about-me-modal__claim {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .about-me-modal__claim-emoji {
+    font-size: 24px;
+    line-height: 38px;
+  }
+
+  .about-me-modal__claim-text {
+    font-size: 12px;
+    line-height: 16px;
   }
 }
 
