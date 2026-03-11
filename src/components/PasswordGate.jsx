@@ -3,7 +3,7 @@ import './PasswordGate.css';
 
 /** sessionStorage: gate shows again on new tab or after closing tab; no gate on refresh in same tab. */
 const STORAGE_KEY = 'portfolio-2026-unlocked';
-const CORRECT_PASSWORD = 'sherbetlemon';
+const CORRECT_PASSWORD = 'slem';
 
 export default function PasswordGate({ children }) {
   const [unlocked, setUnlocked] = useState(false);
