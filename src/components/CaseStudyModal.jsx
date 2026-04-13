@@ -1,8 +1,9 @@
 /**
  * Case Study modal – Figma 380-1571 first section.
- * Max width 1200px, full height minus 24px top/bottom margin, background #212325.
+ * Password overlay inside modal – Figma 746-3613 (dark scrim over case study body).
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import PasswordPrompt, { readCaseStudyUnlocked } from './PasswordPrompt';
 import heroGif from '../assets/hero.gif';
 import finalGif from '../assets/final.gif';
 import e1QrCode from '../assets/e1_qr-code.png';
@@ -11,6 +12,8 @@ import e3QrCodeSecureLink from '../assets/e3_qr-code+secure-link.png';
 import './CaseStudyModal.css';
 
 const CaseStudyModal = ({ isOpen, onClose }) => {
+  const [contentUnlocked, setContentUnlocked] = useState(false);
+
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') onClose();
@@ -18,6 +21,7 @@ const CaseStudyModal = ({ isOpen, onClose }) => {
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
       document.body.style.overflow = 'hidden';
+      setContentUnlocked(readCaseStudyUnlocked());
     }
     return () => {
       document.removeEventListener('keydown', handleEscape);
@@ -33,8 +37,12 @@ const CaseStudyModal = ({ isOpen, onClose }) => {
       onClick={onClose}
       role="dialog"
       aria-modal="true"
+      aria-label="Case study"
     >
-      <div className="case-study-modal" onClick={(e) => e.stopPropagation()}>
+      <div
+        className={`case-study-modal${contentUnlocked ? '' : ' case-study-modal--locked'}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="case-study-modal__close-wrap">
           <button
             type="button"
@@ -356,6 +364,11 @@ const CaseStudyModal = ({ isOpen, onClose }) => {
             </div>
           </div>
         </section>
+        {!contentUnlocked && (
+          <div className="case-study-modal__password-layer">
+            <PasswordPrompt onSuccess={() => setContentUnlocked(true)} />
+          </div>
+        )}
       </div>
     </div>
   );

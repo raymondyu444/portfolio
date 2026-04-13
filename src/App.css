@@ -27,7 +27,7 @@
     position: static !important;
     left: auto !important;
     top: auto !important;
-    /* keep fixed width/height from desktop (208x290 lore, 480x286 case study) */
+    /* lore card width fixed; height is intrinsic from content (desktop uses same component) */
   }
 
   .app-cards .ticker {
