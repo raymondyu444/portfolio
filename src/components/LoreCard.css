@@ -45,10 +45,10 @@
 .lore-card__face {
   grid-area: 1 / 1;
   position: relative;
-  align-self: start;
+  /* Same row height for both faces so hover (back) matches default (front) outer size */
+  align-self: stretch;
   justify-self: stretch;
   width: 100%;
-  height: fit-content;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   box-shadow: 6px 6px 0px 0px #000000;
@@ -61,6 +61,8 @@
   padding-inline: var(--lore-frame-pad);
   transform: rotateY(0deg);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .lore-card__front-shell {
@@ -68,7 +70,8 @@
   flex-direction: column;
   align-items: stretch;
   width: 100%;
-  height: fit-content;
+  flex: 1 1 auto;
+  min-height: 0;
   box-sizing: border-box;
 }
 
@@ -85,6 +88,33 @@
   padding: var(--lore-frame-pad);
   overflow: hidden;
   box-sizing: border-box;
+}
+
+/* Back: same padding/column as front inner; no #26282a stroke (that’s only on the light front card). */
+.lore-card__inner--back {
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  background-color: #0d55c0;
+  border: none;
+  justify-content: flex-start;
+}
+
+.lore-card__back-cta-wrap {
+  width: 176px;
+  max-width: 100%;
+  margin: 0 auto;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding-top: 8px;
+  padding-left: 8px;
+}
+
+.lore-card__back-cta-wrap .lore-card__cta {
+  width: 100%;
+  justify-content: flex-start;
 }
 
 /* Figma 744:3371 — texture behind section; 190×306 at top-left of inner padding box. */
@@ -469,10 +499,12 @@
 
 .lore-card__face--back {
   background-color: #0d55c0;
-  padding: 24px;
+  padding-block: var(--lore-frame-pad);
+  padding-inline: var(--lore-frame-pad);
   transform: rotateY(180deg);
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  box-sizing: border-box;
   box-shadow: 6px 6px 0px 0px #000000, inset 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
@@ -481,16 +513,17 @@
   z-index: 2;
 }
 
-.lore-card-container:hover .lore-card__face,
-.lore-card-container--hovered .lore-card__face {
-  box-shadow: 7px 7px 0px 0px #000000;
-}
+/* Hover must not grow the shadow (was 7×7 vs 6×6); galaxy CTA still reflects hover in JS. */
 
 .lore-card-container--dragging:not(.lore-card-container--touch-dragging) .lore-card {
   transition: none;
   transform: rotateY(0deg) !important;
 }
 
-.lore-card-container--dragging:not(.lore-card-container--touch-dragging) .lore-card__face {
+.lore-card-container--dragging:not(.lore-card-container--touch-dragging) .lore-card__face--front {
   box-shadow: 6px 6px 0px 0px #000000;
+}
+
+.lore-card-container--dragging:not(.lore-card-container--touch-dragging) .lore-card__face--back {
+  box-shadow: 6px 6px 0px 0px #000000, inset 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
 }

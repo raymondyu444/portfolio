@@ -330,37 +330,43 @@ const LoreCard = ({ onHoverChange, onAboutMeClick }) => {
           </div>
         </div>
 
-        {/* Back of card - only the CTA is clickable */}
+        {/* Back of card – same shell → inner → 176px column as front so CTA aligns with section */}
         <div className="lore-card__face lore-card__face--back">
-          <button
-            ref={aboutMeButtonRef}
-            type="button"
-            className="lore-card__cta lore-card__cta-button"
-            onMouseDown={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => {
-              e.stopPropagation();
-              if (e.changedTouches?.length && onAboutMeClick) {
-                aboutMeHandledByTouchRef.current = true;
-                onAboutMeClick();
-              }
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (aboutMeHandledByTouchRef.current) {
-                aboutMeHandledByTouchRef.current = false;
-                return;
-              }
-              if (onAboutMeClick) onAboutMeClick();
-            }}
-          >
-            <span className="lore-card__cta-text">ABOUT ME</span>
-            <div className="lore-card__arrows">
-              <ArrowIcon className="lore-card__arrow lore-card__arrow--1" />
-              <ArrowIcon className="lore-card__arrow lore-card__arrow--2" />
-              <ArrowIcon className="lore-card__arrow lore-card__arrow--3" />
+          <div className="lore-card__front-shell">
+            <div className="lore-card__inner lore-card__inner--back">
+              <div className="lore-card__back-cta-wrap">
+                <button
+                  ref={aboutMeButtonRef}
+                  type="button"
+                  className="lore-card__cta lore-card__cta-button"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchEnd={(e) => {
+                    e.stopPropagation();
+                    if (e.changedTouches?.length && onAboutMeClick) {
+                      aboutMeHandledByTouchRef.current = true;
+                      onAboutMeClick();
+                    }
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (aboutMeHandledByTouchRef.current) {
+                      aboutMeHandledByTouchRef.current = false;
+                      return;
+                    }
+                    if (onAboutMeClick) onAboutMeClick();
+                  }}
+                >
+                  <span className="lore-card__cta-text">ABOUT ME</span>
+                  <div className="lore-card__arrows">
+                    <ArrowIcon className="lore-card__arrow lore-card__arrow--1" />
+                    <ArrowIcon className="lore-card__arrow lore-card__arrow--2" />
+                    <ArrowIcon className="lore-card__arrow lore-card__arrow--3" />
+                  </div>
+                </button>
+              </div>
             </div>
-          </button>
+          </div>
         </div>
       </div>
     </div>
